@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.zavrsniraddropbox.MoveWindowController"
+            prefHeight="160.0" prefWidth="234.0">
+    <children>
+        <BorderPane prefHeight="232.0" prefWidth="267.0">
+            <center>
+                <TreeView fx:id="treeView" prefHeight="185.0" prefWidth="267.0" BorderPane.alignment="CENTER" />
+            </center>
+            <bottom>
+                <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button fx:id="buttonConfirm" mnemonicParsing="false" onAction="#buttonClick" text="Confirm" />
+                        <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancelClick" text="Cancel" />
+                    </children>
+                </HBox>
+            </bottom>
+            <top>
+                <Label BorderPane.alignment="CENTER" />
+            </top>
+        </BorderPane>
+    </children>
+
+</AnchorPane>

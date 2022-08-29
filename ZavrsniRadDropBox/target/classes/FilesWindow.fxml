@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.FilesWindowController">
+   <children>
+      <BorderPane prefHeight="400.0" prefWidth="600.0">
+         <top>
+            <fx:include fx:id="menuBar" source="MenuWindow.fxml" />
+         </top>
+         <center>
+            <BorderPane BorderPane.alignment="CENTER">
+               <top>
+                  <VBox fx:id="vBox" BorderPane.alignment="CENTER">
+                     <children>
+                        <ToolBar>
+                           <items>
+                              <Label text="FilesWindow" />
+                              <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadFile" text="Upload File" />
+                              <Button fx:id="uploadFolderButton" mnemonicParsing="false" onAction="#uploadFolder" text="Upload Folder" />
+                              <Button fx:id="createFolder" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#createFolder" text="Create folder" />
+                              <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresPage" text="Refresh" />
+                              <Button fx:id="autoFolderButton" mnemonicParsing="false" onAction="#setAutoFolder" text="Auto Folder" />
+                           </items>
+                        </ToolBar>
+                     </children>
+                  </VBox>
+               </top>
+               <center>
+                  <TreeView fx:id="treeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
