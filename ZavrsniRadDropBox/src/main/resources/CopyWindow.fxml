@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="160.0" prefWidth="234.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.CopyWindowController">
+<AnchorPane prefHeight="160.0" prefWidth="234.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.controller.CopyWindowController">
     <children>
       <BorderPane prefHeight="232.0" prefWidth="267.0">
          <center>

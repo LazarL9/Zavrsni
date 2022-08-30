@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.MainController">
+<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.controller.MainController">
    <children>
       <BorderPane>
          <top>
@@ -21,7 +20,7 @@
                </padding>
                <children>
                   <Label fx:id="welcomeText" />
-                  <Button onAction="#onHelloButtonClick" text="Hello!" />
+                  <Button onAction="#onHelloButtonClick" text="Prijava!" />
                </children>
             </VBox>
          </center>

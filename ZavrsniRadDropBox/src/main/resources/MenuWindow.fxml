@@ -5,30 +5,19 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="11.0" prefWidth="189.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.MenuWindowController">
+<AnchorPane prefHeight="11.0" prefWidth="189.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.controller.MenuWindowController">
     <MenuBar fx:id="mainMenu" prefHeight="25.0" prefWidth="600.0">
         <menus>
-            <Menu mnemonicParsing="false" text="File">
+            <Menu mnemonicParsing="false" text="Datoteka">
                 <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
+               <MenuItem fx:id="files" mnemonicParsing="false" onAction="#showWindowFiles" text="Datoteke" />
                 </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
+            <Menu mnemonicParsing="false" text="Prijava">
                 <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+               <MenuItem fx:id="login" mnemonicParsing="false" onAction="#showMainWindow" text="Prijava" />
                 </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-                <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                </items>
-            </Menu>
-         <Menu mnemonicParsing="false" text="Testing">
-            <items>
-               <MenuItem fx:id="files" mnemonicParsing="false" onAction="#showWindowFiles" text="Files" />
-               <MenuItem fx:id="login" mnemonicParsing="false" onAction="#showMainWindow" text="Login" />
-            </items>
-         </Menu>
         </menus>
     </MenuBar>
 

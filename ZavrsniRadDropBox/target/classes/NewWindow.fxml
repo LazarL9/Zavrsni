@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="138.0" prefWidth="226.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.NewWindowController">
+<AnchorPane prefHeight="138.0" prefWidth="226.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.controller.NewWindowController">
    <children>
       <Label layoutX="67.0" layoutY="14.0" text="New Accses token" />
       <TextArea fx:id="accesTokenArea" layoutX="14.0" layoutY="51.0" prefHeight="17.0" prefWidth="200.0" />
