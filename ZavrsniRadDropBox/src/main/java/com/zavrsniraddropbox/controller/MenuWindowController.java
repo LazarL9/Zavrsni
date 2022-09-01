@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 
@@ -14,6 +15,13 @@ public class MenuWindowController {
 
     @FXML
     private MenuBar mainMenu;
+
+    @FXML
+    private Label korisnikLabel;
+
+    public void setKorisnikLabel(String name){
+        korisnikLabel.setText(name);
+    }
 
     public void showWindowFiles()throws Exception{
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("FilesWindow.fxml"));

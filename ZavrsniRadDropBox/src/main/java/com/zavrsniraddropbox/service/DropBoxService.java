@@ -1,9 +1,14 @@
 package com.zavrsniraddropbox.service;
 
 import com.dropbox.core.*;
+import com.dropbox.core.json.JsonReader;
+import com.dropbox.core.oauth.DbxCredential;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.*;
+import com.zavrsniraddropbox.controller.FilesWindowController;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ProgressBar;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -21,6 +26,9 @@ import java.util.stream.Stream;
 public class DropBoxService {
 
     public static DbxClientV2 client;
+
+    @FXML
+    private ProgressBar bar;
 
     public static DbxClientV2 getClient(){
         if(client==null){
@@ -42,20 +50,17 @@ public class DropBoxService {
     }
 
 
-    private static String getToken(){
-        final String DATABASE_FILE = "src/main/resources/properties.properties";
+    private static DbxCredential getToken(){
+        final File DATABASE_FILE = new File("src/main/resources/properties.properties");
 
-        try (InputStream input = new FileInputStream(DATABASE_FILE)) {
-
-            Properties prop = new Properties();
-            prop.load(input);
-            return prop.getProperty("accsesToken");
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        DbxCredential credential = null;
+        try {
+            credential = DbxCredential.Reader.readFromFile(DATABASE_FILE);
+        } catch (JsonReader.FileLoadException ex) {
+            ex.printStackTrace();
+            return null;
         }
-
-        return null;
+        return credential;
     }
 
     public static void deleteFile(String path){
@@ -160,6 +165,28 @@ public class DropBoxService {
         }
     }
 
+    public static void downloadFile(String path,String downloadPath){
+        DbxDownloader<FileMetadata> downloader = null;
+        try {
+            downloader = client.files().download(path);
+        } catch (DbxException e) {
+            e.printStackTrace();
+        }
+        if(downloadPath!=null){
+            try {
+                FileOutputStream out = new FileOutputStream(downloadPath+path);
+                downloader.download(out);
+                out.close();
+            } catch (DbxException ex) {
+                System.out.println(ex.getMessage());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void uploadFile(String filePath){
         String path=filePath.substring(filePath.lastIndexOf("\\"));
         path=path.substring(0,0)+"/"+path.substring(1);
@@ -173,6 +200,7 @@ public class DropBoxService {
     }
 
     public static void uploadFolder(String folderPath){
+        Integer maxBroj;
         List<Path> result = null;
         try (Stream<Path> walk = Files.walk(Path.of(folderPath))) {
             result = walk.collect(Collectors.toList());
@@ -184,11 +212,13 @@ public class DropBoxService {
         String rename=files.get(0).substring(files.get(0).lastIndexOf('\\'));
         String absolutPath=files.get(0).substring(0,files.get(0).length()- rename.length());
 
-
-        for (String s : files) {
-            File file = new File(s);
+        maxBroj=files.size();
+        for (int i=0;i<files.size();i++) {
+            Double postotak=(double) i+1/maxBroj;
+            System.out.println(postotak);
+            File file = new File(files.get(i));
             if (file.isDirectory()) {
-                String fileNoAbsolute = s.substring(absolutPath.length());
+                String fileNoAbsolute = files.get(i).substring(absolutPath.length());
                 fileNoAbsolute = fileNoAbsolute.replace('\\', '/');
                 try {
                     client.files().createFolderV2(fileNoAbsolute);
@@ -199,9 +229,9 @@ public class DropBoxService {
                     e.printStackTrace();
                 }
             } else {
-                String fileNoAbsolute = s.substring(absolutPath.length());
+                String fileNoAbsolute = files.get(i).substring(absolutPath.length());
                 fileNoAbsolute = fileNoAbsolute.replace('\\', '/');
-                try (InputStream in = new FileInputStream(s)) {
+                try (InputStream in = new FileInputStream(files.get(i))) {
                     client.files().uploadBuilder(fileNoAbsolute)
                             .uploadAndFinish(in);
                 } catch (IOException | DbxException e) {
