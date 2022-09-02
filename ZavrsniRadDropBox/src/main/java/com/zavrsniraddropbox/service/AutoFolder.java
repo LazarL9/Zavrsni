@@ -29,7 +29,7 @@ public class AutoFolder extends TimerTask {
         } catch (IOException x) {
             x.printStackTrace();
         }
-        DropBoxService.uploadFolder(String.valueOf(this.path));
+        DropBoxService.uploadFoldera(String.valueOf(this.path));
     }
 
     public void run() {

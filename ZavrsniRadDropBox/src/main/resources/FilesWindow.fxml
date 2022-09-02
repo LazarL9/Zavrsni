@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.controller.FilesWindowController">
    <children>
@@ -26,7 +27,7 @@
                      <children>
                         <ToolBar>
                            <items>
-                              <Label text="FilesWindow" />
+                              <Label text="Datoteke" />
                               <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresPage">
                                  <graphic>
                                     <ImageView fitHeight="20.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
@@ -46,33 +47,31 @@
                               <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
                            </VBox.margin>
                         </Label>
+                        <Line endX="100.0" startX="-553.0" />
                      </children>
                   </VBox>
                </top>
                <center>
                   <VBox BorderPane.alignment="CENTER">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefHeight="39.0" prefWidth="505.0">
                            <children>
-                              <Label text="Naziv">
+                              <Label fx:id="labelNaziv" alignment="CENTER" text="Naziv">
                                  <HBox.margin>
-                                    <Insets left="40.0" />
+                                    <Insets left="40.0" top="5.0" />
                                  </HBox.margin>
                               </Label>
-                              <Label text="Datum modificiranja">
+                              <Label fx:id="labelModif" text="Modificirano">
                                  <HBox.margin>
-                                    <Insets left="120.0" />
+                                    <Insets left="120.0" top="5.0" />
                                  </HBox.margin>
                               </Label>
                            </children>
                         </HBox>
-                        <TreeView fx:id="treeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                        <TreeView fx:id="treeView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="291.0" prefWidth="505.0" />
                      </children>
                   </VBox>
                </center>
-               <bottom>
-                  <fx:include fx:id="progressBar" source="ProgressBar.fxml" BorderPane.alignment="BOTTOM_RIGHT" />
-               </bottom>
                <left>
                   <VBox BorderPane.alignment="CENTER">
                      <children>
@@ -81,6 +80,14 @@
                      </children>
                   </VBox>
                </left>
+               <bottom>
+                  <HBox prefHeight="14.0" prefWidth="290.0" BorderPane.alignment="BOTTOM_CENTER">
+                     <children>
+                        <Label text="Progress: " />
+                        <fx:include fx:id="progressBar" source="ProgressBar.fxml" BorderPane.alignment="BOTTOM_RIGHT" />
+                     </children>
+                  </HBox>
+               </bottom>
             </BorderPane>
          </center>
       </BorderPane>

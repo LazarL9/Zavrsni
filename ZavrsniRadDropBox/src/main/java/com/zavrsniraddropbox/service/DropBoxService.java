@@ -5,9 +5,8 @@ import com.dropbox.core.json.JsonReader;
 import com.dropbox.core.oauth.DbxCredential;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.*;
-import com.zavrsniraddropbox.controller.FilesWindowController;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -16,10 +15,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,7 +24,10 @@ public class DropBoxService {
     public static DbxClientV2 client;
 
     @FXML
-    private ProgressBar bar;
+    private ProgressBar progressBar;
+
+    private int steps=1000;
+    private int curStep=0;
 
     public static DbxClientV2 getClient(){
         if(client==null){
@@ -199,8 +198,7 @@ public class DropBoxService {
         }
     }
 
-    public static void uploadFolder(String folderPath){
-        Integer maxBroj;
+    public static void uploadFoldera(String folderPath){
         List<Path> result = null;
         try (Stream<Path> walk = Files.walk(Path.of(folderPath))) {
             result = walk.collect(Collectors.toList());
@@ -212,10 +210,8 @@ public class DropBoxService {
         String rename=files.get(0).substring(files.get(0).lastIndexOf('\\'));
         String absolutPath=files.get(0).substring(0,files.get(0).length()- rename.length());
 
-        maxBroj=files.size();
         for (int i=0;i<files.size();i++) {
-            Double postotak=(double) i+1/maxBroj;
-            System.out.println(postotak);
+
             File file = new File(files.get(i));
             if (file.isDirectory()) {
                 String fileNoAbsolute = files.get(i).substring(absolutPath.length());
@@ -224,7 +220,7 @@ public class DropBoxService {
                     client.files().createFolderV2(fileNoAbsolute);
                 } catch (CreateFolderErrorException x) {
                     deleteFile(fileNoAbsolute);
-                    uploadFolder(folderPath);
+                    uploadFoldera(folderPath);
                 } catch (DbxException e) {
                     e.printStackTrace();
                 }
@@ -296,4 +292,59 @@ public class DropBoxService {
             e.printStackTrace();
         }
     }
+
+    public void uploadFolder(String folderPath) {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                List<Path> result = null;
+                try (Stream<Path> walk = Files.walk(Path.of(folderPath))) {
+                    result = walk.collect(Collectors.toList());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                List<String> files= result.stream().map(Object::toString).toList();
+                String rename=files.get(0).substring(files.get(0).lastIndexOf('\\'));
+                String absolutPath=files.get(0).substring(0,files.get(0).length()- rename.length());
+
+                steps=files.size();
+                for (int i=0;i<files.size();i++) {
+                    curStep=i;
+                    Thread.sleep(10);
+
+                    updateProgress(curStep, steps);
+                    File file = new File(files.get(i));
+                    if (file.isDirectory()) {
+                        String fileNoAbsolute = files.get(i).substring(absolutPath.length());
+                        fileNoAbsolute = fileNoAbsolute.replace('\\', '/');
+                        try {
+                            client.files().createFolderV2(fileNoAbsolute);
+                        } catch (CreateFolderErrorException x) {
+                            deleteFile(fileNoAbsolute);
+                            uploadFolder(folderPath);
+                        } catch (DbxException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        String fileNoAbsolute = files.get(i).substring(absolutPath.length());
+                        fileNoAbsolute = fileNoAbsolute.replace('\\', '/');
+                        try (InputStream in = new FileInputStream(files.get(i))) {
+                            client.files().uploadBuilder(fileNoAbsolute)
+                                    .uploadAndFinish(in);
+                        } catch (IOException | DbxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                return null;
+            }
+        };
+        task.setOnSucceeded(wse -> {
+            progressBar.setProgress(1);
+        });
+        progressBar.progressProperty().bind(task.progressProperty());
+        new Thread(task).start();
+    }
+
 }

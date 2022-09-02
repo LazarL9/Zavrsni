@@ -3,6 +3,7 @@ package com.zavrsniraddropbox.controller;
 import com.dropbox.core.InvalidAccessTokenException;
 import com.zavrsniraddropbox.MainApplication;
 import com.zavrsniraddropbox.service.DropBoxService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +18,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainController implements Initializable {
@@ -57,9 +60,6 @@ public class MainController implements Initializable {
                 }
             }
 
-        // Get current account info
-        //FullAccount account = client.users().getCurrentAccount();
-        //welcomeText.setText(account.getName().getDisplayName());
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getClassLoader().getResource("FilesWindow.fxml"));
@@ -76,6 +76,18 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    try {
+                        nekaj();
+                    } catch (DbxException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }, 100);
     }
 }

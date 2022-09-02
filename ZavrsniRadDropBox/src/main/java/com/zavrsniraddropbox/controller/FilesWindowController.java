@@ -1,6 +1,5 @@
 package com.zavrsniraddropbox.controller;
 
-import com.dropbox.core.DbxDownloader;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.*;
@@ -29,19 +28,14 @@ import javafx.util.Callback;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.*;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Stream;
 
 
 public class FilesWindowController implements Initializable {
 
     @FXML
     private TreeView<Metadata> directoryView;
-
-    @FXML
-    private ProgressBarController progressBarController;
 
     @FXML
     private TreeView<Metadata> treeView;
@@ -55,11 +49,26 @@ public class FilesWindowController implements Initializable {
     @FXML
     private TextField searchField;
 
+    @FXML
+    private Label labelNaziv;
+
+    @FXML
+    private Label labelModif;
+
+    @FXML
+    private DropBoxService progressBarController;
+
     private DbxClientV2 client= DropBoxService.getClient();
     private String currentFolder="";
     private String FolderName="New Folder";
     private Boolean isSearch=false;
     private String searchText=null;
+
+    private Boolean isSortedNaz =false;
+    private Boolean isReversedNaz =true;
+
+    private Boolean isSortedMod=false;
+    private Boolean isReversedMod=true;
 
     public void createTree(Metadata metadata, TreeItem<Metadata> parent) throws DbxException {
         if (metadata.getClass()== FolderMetadata.class) {
@@ -310,7 +319,78 @@ public class FilesWindowController implements Initializable {
             }
         }
 
+
+
         treeView.setRoot(rootItem);
+
+        if(isSortedNaz){
+            if(!isReversedNaz){
+                ArrayList<TreeItem<Metadata>> lista=new ArrayList<>();
+                lista.addAll(treeView.getRoot().getChildren());
+                lista.sort(Comparator.comparing(t->t.getValue().getName()));
+                TreeItem<Metadata> treeItem=new TreeItem<>();
+                treeItem.getChildren().addAll(lista);
+                treeView.setRoot(treeItem);
+            }else if(isReversedNaz){
+                ArrayList<TreeItem<Metadata>> lista=new ArrayList<>();
+                lista.addAll(treeView.getRoot().getChildren());
+                lista.sort(Comparator.comparing(t->t.getValue().getName()));
+                Collections.reverse(lista);
+                TreeItem<Metadata> treeItem=new TreeItem<>();
+                treeItem.getChildren().addAll(lista);
+                treeView.setRoot(treeItem);
+            }
+        }else if(isSortedMod){
+            if(!isReversedMod){
+                ArrayList<TreeItem<Metadata>> lista=new ArrayList<>();
+                lista.addAll(treeView.getRoot().getChildren());
+                Collections.sort(lista, new Comparator<TreeItem<Metadata>>() {
+                    @Override
+                    public int compare(TreeItem<Metadata> o1, TreeItem<Metadata> o2) {
+                        if(o1.getValue().getClass()==FileMetadata.class&&o2.getValue().getClass()==FileMetadata.class){
+                            FileMetadata f1= (FileMetadata) o1.getValue();
+                            FileMetadata f2= (FileMetadata) o2.getValue();
+                            if(f1.getClientModified().getTime()<f2.getClientModified().getTime()){
+                                return -1;
+                            }else if(f1.getClientModified().getTime()==f2.getClientModified().getTime()){
+                                return 0;
+                            }else {
+                                return 1;
+                            }
+                        }else{
+                            return -2;
+                        }
+                    }
+                });
+                TreeItem<Metadata> treeItem=new TreeItem<>();
+                treeItem.getChildren().addAll(lista);
+                treeView.setRoot(treeItem);
+            }else if(isReversedMod){
+                ArrayList<TreeItem<Metadata>> lista=new ArrayList<>();
+                lista.addAll(treeView.getRoot().getChildren());
+                Collections.sort(lista, new Comparator<TreeItem<Metadata>>() {
+                    @Override
+                    public int compare(TreeItem<Metadata> o1, TreeItem<Metadata> o2) {
+                        if(o1.getValue().getClass()==FileMetadata.class&&o2.getValue().getClass()==FileMetadata.class){
+                            FileMetadata f1= (FileMetadata) o1.getValue();
+                            FileMetadata f2= (FileMetadata) o2.getValue();
+                            if(f1.getClientModified().getTime()<f2.getClientModified().getTime()){
+                                return 1;
+                            }else if(f1.getClientModified().getTime()==f2.getClientModified().getTime()){
+                                return 0;
+                            }else {
+                                return -1;
+                            }
+                        }else{
+                            return -2;
+                        }
+                    }
+                });
+                TreeItem<Metadata> treeItem=new TreeItem<>();
+                treeItem.getChildren().addAll(lista);
+                treeView.setRoot(treeItem);
+            }
+        }
     }
 
     public void displayTreeViewSide(String inputDirectoryLocation){
@@ -364,7 +444,6 @@ public class FilesWindowController implements Initializable {
                                 }while (fullPath!="");
                                 Collections.reverse(array);
 
-                                String backFolder=currentFolder;
                                 currentFolder=item.getPathLower();
                                 displayTreeView(currentFolder);
 
@@ -623,7 +702,7 @@ public class FilesWindowController implements Initializable {
                             if(item.getClass()== FileMetadata.class){
                                 Date datum=((FileMetadata) item).getClientModified();
                                 SimpleDateFormat newFormat =new SimpleDateFormat("dd-MM-yyyy hh:mm");
-                                Label date=new Label(newFormat.format(datum).toString());
+                                Label date=new Label(newFormat.format(datum));
                                 cellBox.getChildren().add(date);
                             }
                             cellBox.setAlignment(Pos.CENTER_LEFT);
@@ -656,6 +735,75 @@ public class FilesWindowController implements Initializable {
         }
 
         treeView.setRoot(rootItem);
+
+        if(isSortedNaz){
+            if(!isReversedNaz){
+                ArrayList<TreeItem<Metadata>> lista=new ArrayList<>();
+                lista.addAll(treeView.getRoot().getChildren());
+                lista.sort(Comparator.comparing(t->t.getValue().getName()));
+                TreeItem<Metadata> treeItem=new TreeItem<>();
+                treeItem.getChildren().addAll(lista);
+                treeView.setRoot(treeItem);
+            }else if(isReversedNaz){
+                ArrayList<TreeItem<Metadata>> lista=new ArrayList<>();
+                lista.addAll(treeView.getRoot().getChildren());
+                lista.sort(Comparator.comparing(t->t.getValue().getName()));
+                Collections.reverse(lista);
+                TreeItem<Metadata> treeItem=new TreeItem<>();
+                treeItem.getChildren().addAll(lista);
+                treeView.setRoot(treeItem);
+            }
+        }else if(isSortedMod) {
+            if (!isReversedMod) {
+                ArrayList<TreeItem<Metadata>> lista = new ArrayList<>();
+                lista.addAll(treeView.getRoot().getChildren());
+                Collections.sort(lista, new Comparator<TreeItem<Metadata>>() {
+                    @Override
+                    public int compare(TreeItem<Metadata> o1, TreeItem<Metadata> o2) {
+                        if (o1.getValue().getClass() == FileMetadata.class && o2.getValue().getClass() == FileMetadata.class) {
+                            FileMetadata f1 = (FileMetadata) o1.getValue();
+                            FileMetadata f2 = (FileMetadata) o2.getValue();
+                            if (f1.getClientModified().getTime() < f2.getClientModified().getTime()) {
+                                return -1;
+                            } else if (f1.getClientModified().getTime() == f2.getClientModified().getTime()) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        } else {
+                            return -2;
+                        }
+                    }
+                });
+                TreeItem<Metadata> treeItem = new TreeItem<>();
+                treeItem.getChildren().addAll(lista);
+                treeView.setRoot(treeItem);
+            } else if (isReversedMod) {
+                ArrayList<TreeItem<Metadata>> lista = new ArrayList<>();
+                lista.addAll(treeView.getRoot().getChildren());
+                Collections.sort(lista, new Comparator<TreeItem<Metadata>>() {
+                    @Override
+                    public int compare(TreeItem<Metadata> o1, TreeItem<Metadata> o2) {
+                        if (o1.getValue().getClass() == FileMetadata.class && o2.getValue().getClass() == FileMetadata.class) {
+                            FileMetadata f1 = (FileMetadata) o1.getValue();
+                            FileMetadata f2 = (FileMetadata) o2.getValue();
+                            if (f1.getClientModified().getTime() < f2.getClientModified().getTime()) {
+                                return 1;
+                            } else if (f1.getClientModified().getTime() == f2.getClientModified().getTime()) {
+                                return 0;
+                            } else {
+                                return -1;
+                            }
+                        } else {
+                            return -2;
+                        }
+                    }
+                });
+                TreeItem<Metadata> treeItem = new TreeItem<>();
+                treeItem.getChildren().addAll(lista);
+                treeView.setRoot(treeItem);
+            }
+        }
     }
 
     @FXML
@@ -670,24 +818,11 @@ public class FilesWindowController implements Initializable {
 
     @FXML
     private void uploadFolder(){
-
-        ArrayList<TreeItem<Metadata>> lista=new ArrayList<>();
-        lista.addAll(treeView.getRoot().getChildren());
-        lista.sort(Comparator.comparing(t->t.getValue().getName()));
-        Collections.reverse(lista);
-        TreeItem<Metadata> treeItem=new TreeItem<>();
-        treeItem.getChildren().addAll(lista);
-        treeView.setRoot(treeItem);
-
-        System.out.println( treeView.getRoot().getChildren().size());
-
         String folderPath=DropBoxService.getFolder();
         if(folderPath==null){
             return;
         }
-
-        //DropBoxService.uploadFolder(folderPath);
-        //progressBarController.uploadFolder(folderPath);
+        progressBarController.uploadFolder(folderPath);
         refreshPage();
     }
 
@@ -703,7 +838,6 @@ public class FilesWindowController implements Initializable {
         }else{
             displayTreeView(currentFolder);
         }
-
     }
 
     @FXML
@@ -759,6 +893,81 @@ public class FilesWindowController implements Initializable {
                         refreshPage();
                     }
                 });
+            }
+        });
+
+        //SortNaz
+        labelNaziv.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String naziv=labelNaziv.textProperty().getValue();
+                isReversedMod=true;
+                isSortedMod=false;
+                labelModif.textProperty().setValue(labelModif.textProperty().getValue().substring(0,12));
+                if(!isSortedNaz){
+                    isSortedNaz =true;
+                    refreshPage();
+                }
+                if(!isReversedNaz){
+                    if(naziv.length()>5){
+                        naziv=naziv.substring(0,5);
+                        naziv=naziv+"↓";
+                        labelNaziv.textProperty().setValue(naziv);
+                    }else {
+                        naziv=naziv+"↓";
+                        labelNaziv.textProperty().setValue(naziv);
+                    }
+                    isReversedNaz =true;
+                    refreshPage();
+                }else{
+                    if(naziv.length()>5){
+                        naziv=naziv.substring(0,5);
+                        naziv=naziv+"↑";
+                        labelNaziv.textProperty().setValue(naziv);
+                    }else {
+                        naziv=naziv+"↑";
+                        labelNaziv.textProperty().setValue(naziv);
+                    }
+                    isReversedNaz =false;
+                    refreshPage();
+                }
+            }
+        });
+        //SortMod
+        labelModif.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String modif=labelModif.textProperty().getValue();
+                isReversedNaz=true;
+                isSortedNaz=false;
+                labelNaziv.textProperty().setValue(labelNaziv.textProperty().getValue().substring(0,5));
+                if(!isSortedMod){
+                    isSortedMod =true;
+                    refreshPage();
+                }
+                if(!isReversedMod){
+                    if(modif.length()>12){
+                        modif=modif.substring(0,12);
+                        modif=modif+"↓";
+                        labelModif.textProperty().setValue(modif);
+                    }else {
+                        modif=modif+"↓";
+                        labelModif.textProperty().setValue(modif);
+                    }
+                    isReversedMod =true;
+                    refreshPage();
+                }else{
+                    if(modif.length()>12){
+                        modif=modif.substring(0,12);
+                        modif=modif+"↑";
+                        labelModif.textProperty().setValue(modif);
+                    }else {
+                        modif=modif+"↑";
+                        labelModif.textProperty().setValue(modif);
+                    }
+                    isReversedMod =false;
+                    refreshPage();
+                }
             }
         });
     }

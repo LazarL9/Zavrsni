@@ -3,7 +3,7 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="0.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.controller.ProgressBarController">
+<AnchorPane prefHeight="0.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.service.DropBoxService">
    <children>
       <ProgressBar fx:id="progressBar" prefHeight="14.0" prefWidth="200.0" progress="0.0" />
    </children>
