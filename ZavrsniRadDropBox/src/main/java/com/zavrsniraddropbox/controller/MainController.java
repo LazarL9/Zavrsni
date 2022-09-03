@@ -1,6 +1,7 @@
 package com.zavrsniraddropbox.controller;
 
 import com.dropbox.core.InvalidAccessTokenException;
+import com.dropbox.core.v2.check.EchoResult;
 import com.zavrsniraddropbox.MainApplication;
 import com.zavrsniraddropbox.service.DropBoxService;
 import javafx.application.Platform;
@@ -28,7 +29,7 @@ public class MainController implements Initializable {
     private Label welcomeText;
 
     @FXML
-    private MenuBar mainMenu;
+    private MenuWindowController menuBarController;
 
     @FXML
     protected void onHelloButtonClick() {
@@ -59,7 +60,7 @@ public class MainController implements Initializable {
                     ex.printStackTrace();
                 }
             }
-
+        menuBarController.setDisableF();
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getClassLoader().getResource("FilesWindow.fxml"));

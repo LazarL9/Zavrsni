@@ -39,7 +39,7 @@
                               <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#uploadFile" text="Učitaj datoteku" />
                               <Button fx:id="uploadFolderButton" mnemonicParsing="false" onAction="#uploadFolder" text="Učitaj direktorij" />
                               <Button fx:id="createFolder" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#createFolder" text="Napravi direktorij" />
-                              <Button fx:id="autoFolderButton" mnemonicParsing="false" onAction="#setAutoFolder" text="Automatski direktorij" />
+                              <Button fx:id="autoFolderButton" mnemonicParsing="false" onAction="#setAutoFolder" text="Dodaj sinkronizaciju" />
                            </items>
                         </ToolBar>
                         <Label text="root">
@@ -54,7 +54,7 @@
                <center>
                   <VBox BorderPane.alignment="CENTER">
                      <children>
-                        <HBox prefHeight="39.0" prefWidth="505.0">
+                        <HBox prefHeight="45.0" prefWidth="505.0">
                            <children>
                               <Label fx:id="labelNaziv" alignment="CENTER" text="Naziv">
                                  <HBox.margin>
@@ -76,7 +76,7 @@
                   <VBox BorderPane.alignment="CENTER">
                      <children>
                         <TextField fx:id="searchField" promptText="Search" />
-                        <TreeView fx:id="directoryView" prefHeight="295.0" prefWidth="117.0" />
+                        <TreeView fx:id="directoryView" prefHeight="295.0" prefWidth="117.0" stylesheets="@css/test.css" />
                      </children>
                   </VBox>
                </left>
@@ -86,6 +86,9 @@
                         <Label text="Progress: " />
                         <fx:include fx:id="progressBar" source="ProgressBar.fxml" BorderPane.alignment="BOTTOM_RIGHT" />
                      </children>
+                     <BorderPane.margin>
+                        <Insets left="150.0" />
+                     </BorderPane.margin>
                   </HBox>
                </bottom>
             </BorderPane>

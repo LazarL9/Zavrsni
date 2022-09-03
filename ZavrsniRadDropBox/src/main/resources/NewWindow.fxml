@@ -15,7 +15,7 @@
    <children>
       <VBox alignment="CENTER" prefHeight="318.0" prefWidth="551.0">
          <children>
-            <Label text="Uneseni podaci za aplikaciju" />
+            <Label text="Provjerite dali je ispravan App key unesen." />
             <HBox alignment="CENTER" prefHeight="56.0" prefWidth="551.0">
                <children>
                   <Label alignment="CENTER" text="App Key" />
@@ -40,18 +40,19 @@
             <Line endX="450.0" startX="-100.0" />
             <VBox fx:id="generateTokenBox" alignment="CENTER">
                <children>
+                  <Label text="Generirajte access token za vašu aplikaciju" />
                   <Button mnemonicParsing="false" onAction="#onTokenGenerateClick" text="Generiraj Access Token">
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Hyperlink fx:id="linkToken" text="Link za generirani token" />
+                  <Hyperlink fx:id="linkToken" />
                </children>
             </VBox>
             <Line endX="450.0" startX="-100.0" />
             <VBox fx:id="accessTokenBox" alignment="CENTER" prefHeight="106.0" prefWidth="551.0" visible="false">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Unesi generirani Access Token" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Unesite generirani token i potvrdite prijavu." />
                   <HBox alignment="CENTER" prefHeight="43.0" prefWidth="420.0">
                      <children>
                         <Label text="Access Token" />
@@ -64,12 +65,12 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="31.0" prefWidth="420.0">
                      <children>
-                        <Button fx:id="buttonConfirm" mnemonicParsing="false" onAction="#buttonClick" text="Confirm">
+                        <Button fx:id="buttonConfirm" mnemonicParsing="false" onAction="#buttonClick" text="Potvrdi">
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancelClick" text="Cancel">
+                        <Button fx:id="buttonCancel" mnemonicParsing="false" onAction="#cancelClick" text="Odustani">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>

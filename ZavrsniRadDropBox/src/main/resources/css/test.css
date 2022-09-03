@@ -1,0 +1,7 @@
+
+.tree-cell:selected{
+    -fx-background-color: #526df7;
+	-fx-border-radius: 0px 50px 50px 0px;
+	-fx-background-radius: 0px 50px 50px 0px;
+	-fx-color: white;
+}

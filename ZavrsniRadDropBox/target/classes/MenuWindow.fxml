@@ -10,7 +10,7 @@
 <AnchorPane prefHeight="25.0" prefWidth="563.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zavrsniraddropbox.controller.MenuWindowController">
     <MenuBar fx:id="mainMenu" prefHeight="25.0" prefWidth="545.0">
         <menus>
-            <Menu mnemonicParsing="false" text="Datoteka">
+            <Menu fx:id="datotekaMenu" disable="true" mnemonicParsing="false" text="Datoteka">
                 <items>
                <MenuItem fx:id="files" mnemonicParsing="false" onAction="#showWindowFiles" text="Datoteke" />
                 </items>
@@ -20,6 +20,11 @@
                <MenuItem fx:id="login" mnemonicParsing="false" onAction="#showMainWindow" text="Prijava" />
                 </items>
             </Menu>
+         <Menu fx:id="odjavaMenu" disable="true" mnemonicParsing="false" text="Odjava">
+            <items>
+               <MenuItem fx:id="odjava" mnemonicParsing="false" onAction="#odjaviSe" text="Odjava" />
+            </items>
+         </Menu>
         </menus>
     </MenuBar>
    <Label fx:id="korisnikLabel" alignment="CENTER_RIGHT" layoutX="552.0" layoutY="4.0" text="Niste prijavljeni">

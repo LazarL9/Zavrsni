@@ -1,11 +1,18 @@
 package com.zavrsniraddropbox.service;
 
+import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.*;
 import com.zavrsniraddropbox.service.DropBoxService;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
@@ -29,7 +36,8 @@ public class AutoFolder extends TimerTask {
         } catch (IOException x) {
             x.printStackTrace();
         }
-        DropBoxService.uploadFoldera(String.valueOf(this.path));
+
+       DropBoxService.uploadFoldera(String.valueOf(this.path));
     }
 
     public void run() {

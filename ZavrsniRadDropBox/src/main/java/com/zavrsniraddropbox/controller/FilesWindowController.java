@@ -833,11 +833,7 @@ public class FilesWindowController implements Initializable {
 
     @FXML
     private void refresPage(){
-        if(isSearch){
-            displayTreeViewSearch(searchText);
-        }else{
-            displayTreeView(currentFolder);
-        }
+        refreshPage();
     }
 
     @FXML
@@ -856,6 +852,7 @@ public class FilesWindowController implements Initializable {
         }else {
             displayTreeView(currentFolder);
         }
+        displayTreeViewSide("");
     }
 
     @Override
@@ -865,6 +862,7 @@ public class FilesWindowController implements Initializable {
         } catch (DbxException e) {
             e.printStackTrace();
         }
+        menuBarController.setDisableF();
         displayTreeViewSide("");
 
         //RefreshPage

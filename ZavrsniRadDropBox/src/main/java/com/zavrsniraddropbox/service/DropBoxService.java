@@ -48,6 +48,10 @@ public class DropBoxService {
         client = new DbxClientV2(config, getToken());
     }
 
+    public static void removeClient(){
+        client=null;
+    }
+
 
     private static DbxCredential getToken(){
         final File DATABASE_FILE = new File("src/main/resources/properties.properties");
@@ -337,12 +341,11 @@ public class DropBoxService {
                         }
                     }
                 }
+                updateProgress(1, 1);
                 return null;
             }
         };
-        task.setOnSucceeded(wse -> {
-            progressBar.setProgress(1);
-        });
+
         progressBar.progressProperty().bind(task.progressProperty());
         new Thread(task).start();
     }
