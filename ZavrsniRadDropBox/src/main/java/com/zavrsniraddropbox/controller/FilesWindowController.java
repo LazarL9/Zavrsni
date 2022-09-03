@@ -299,6 +299,78 @@ public class FilesWindowController implements Initializable {
                         }
                     }
                 };
+
+                treeCell.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if(treeCell.getTreeItem()!=null){
+                            Metadata item=treeCell.getTreeItem().getValue();
+                            if (event.getClickCount()==2&&item.getClass()==FolderMetadata.class) {
+
+                                String fullPath=item.getPathLower();
+                                ArrayList<String> array=new ArrayList<>();
+                                do{
+                                    array.add(fullPath.substring(0,fullPath.lastIndexOf("/")));
+                                    fullPath=fullPath.substring(0,fullPath.lastIndexOf("/"));
+                                }while (fullPath!="");
+                                Collections.reverse(array);
+
+                                currentFolder=item.getPathLower();
+                                displayTreeView(currentFolder);
+
+                                HBox gumboviNatrag=new HBox();
+                                gumboviNatrag.setAlignment(Pos.CENTER_LEFT);
+                                for(int i=0;i< array.size();i++){
+                                    Hyperlink goBack;
+                                    String pathName;
+                                    String pathFull=array.get(i);
+                                    if(array.get(i)!=""){
+                                        pathName=array.get(i).substring(array.get(i).lastIndexOf("/")+1);
+                                    }else {
+                                        pathName=array.get(i);
+                                    }
+                                    System.out.println(pathName);
+                                    if(pathName==""){
+                                        goBack=new Hyperlink("root");
+                                    }else{
+                                        goBack=new Hyperlink(pathName);
+                                    }
+
+                                    EventHandler<ActionEvent> goBackEvent = new EventHandler<ActionEvent>() {
+                                        public void handle(ActionEvent e)
+                                        {
+                                            displayTreeView(pathFull);
+                                            currentFolder=pathFull;
+                                            for(int i=0;i<gumboviNatrag.getChildren().size();i++){
+                                                if(gumboviNatrag.getChildren().get(i)==e.getSource()){
+                                                    gumboviNatrag.getChildren().remove(i,gumboviNatrag.getChildren().size());
+                                                }
+                                            }
+                                            if(gumboviNatrag.getChildren().isEmpty()){
+                                                gumboviNatrag.setPadding(new Insets(4));
+                                                gumboviNatrag.getChildren().add(new Label("root"));
+                                            }
+                                        }
+                                    };
+                                    goBack.setOnAction(goBackEvent);
+
+                                    gumboviNatrag.getChildren().add(goBack);
+                                    //if(i!=array.size()-1){
+                                    gumboviNatrag.getChildren().add(new Label(">"));
+                                    //}
+                                    if(i== array.size()-1){
+                                        gumboviNatrag.getChildren().add(new Label(item.getName()));
+                                    }
+
+                                }
+                                if(vBox.getChildren().size()>1){
+                                    vBox.getChildren().remove(1,vBox.getChildren().size());
+                                }
+                                vBox.getChildren().add(gumboviNatrag);
+                            }
+                        }
+                    }
+                });
                 return treeCell;
             }
         });

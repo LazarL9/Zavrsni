@@ -46,11 +46,11 @@
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Hyperlink fx:id="linkToken" text="Link za generirani token" />
+                  <Hyperlink fx:id="linkToken" />
                </children>
             </VBox>
             <Line endX="450.0" startX="-100.0" />
-            <VBox fx:id="accessTokenBox" alignment="CENTER" prefHeight="106.0" prefWidth="551.0">
+            <VBox fx:id="accessTokenBox" alignment="CENTER" prefHeight="106.0" prefWidth="551.0" visible="false">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" text="Unesite generirani token i potvrdite prijavu." />
                   <HBox alignment="CENTER" prefHeight="43.0" prefWidth="420.0">
